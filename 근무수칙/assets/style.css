@@ -1,0 +1,159 @@
+/* 미얀마 마케터 현지교육 2026.09.14-25 — 공통 스타일 */
+:root{
+  --ink:#141414;
+  --ink-2:#4a4a4a;
+  --ink-3:#8a8a8a;
+  --line:#e3e3e3;
+  --bg:#ffffff;
+  --bg-2:#f7f7f6;
+  --accent:#F26522;
+  --accent-soft:#fff2ec;
+  --ok:#1f8a54;
+  --warn:#b8860b;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:"Pretendard","Malgun Gothic","맑은 고딕",-apple-system,sans-serif;
+  color:var(--ink);
+  background:var(--bg-2);
+  line-height:1.7;
+  font-size:15px;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 24px 80px}
+
+/* ---------- 상단 바 ---------- */
+.topbar{
+  background:var(--ink);color:#fff;
+  position:sticky;top:0;z-index:50;
+}
+.topbar .inner{
+  max-width:900px;margin:0 auto;padding:10px 24px;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+}
+.topbar a{color:#fff;text-decoration:none;font-size:13px;opacity:.75}
+.topbar a:hover{opacity:1}
+.topbar .home{font-weight:700;opacity:1;letter-spacing:-.2px}
+.topbar .sp{flex:1}
+
+/* ---------- 헤더 ---------- */
+header.page{
+  background:#fff;border-bottom:1px solid var(--line);
+  padding:38px 0 30px;margin-bottom:30px;
+}
+header.page .inner{max-width:900px;margin:0 auto;padding:0 24px}
+.eyebrow{
+  display:inline-block;background:var(--accent-soft);color:var(--accent);
+  font-size:12px;font-weight:700;letter-spacing:.5px;
+  padding:4px 10px;border-radius:3px;margin-bottom:12px;
+}
+h1{font-size:30px;margin:0 0 8px;letter-spacing:-.6px;line-height:1.3}
+.sub{color:var(--ink-3);font-size:14px;margin:0}
+
+/* ---------- 섹션 ---------- */
+section{background:#fff;border:1px solid var(--line);border-radius:6px;padding:24px 26px;margin-bottom:18px}
+h2{font-size:18px;margin:0 0 14px;letter-spacing:-.3px;padding-bottom:10px;border-bottom:2px solid var(--ink)}
+h3{font-size:15px;margin:22px 0 8px;letter-spacing:-.2px}
+h3:first-child{margin-top:0}
+h4{font-size:14px;margin:16px 0 6px;color:var(--ink-2)}
+p{margin:0 0 10px}
+ul,ol{margin:0 0 10px;padding-left:20px}
+li{margin-bottom:5px}
+li>ul,li>ol{margin-top:5px}
+strong{font-weight:700}
+code{background:var(--bg-2);border:1px solid var(--line);border-radius:3px;padding:1px 5px;font-size:13px;font-family:Consolas,monospace}
+.muted{color:var(--ink-3);font-size:13px}
+.small{font-size:13px}
+hr{border:0;border-top:1px solid var(--line);margin:22px 0}
+
+/* ---------- 표 ---------- */
+table{width:100%;border-collapse:collapse;margin:10px 0 14px;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--bg-2);font-weight:700;font-size:13px;white-space:nowrap}
+td.c,th.c{text-align:center}
+tr.off td{background:#fafafa;color:var(--ink-3)}
+
+/* ---------- 박스 ---------- */
+.box{border-left:3px solid var(--ink-3);background:var(--bg-2);padding:12px 16px;margin:12px 0;border-radius:0 4px 4px 0}
+.box.tip{border-color:var(--accent);background:var(--accent-soft)}
+.box.warn{border-color:var(--warn);background:#fdf8e8}
+.box.say{border-color:var(--ok);background:#f1f9f4}
+.box .t{font-weight:700;font-size:13px;margin-bottom:5px;display:block}
+.box p:last-child,.box ul:last-child{margin-bottom:0}
+
+/* ---------- 흐름 ---------- */
+.flow{list-style:none;padding:0;margin:10px 0 0;counter-reset:f}
+.flow li{
+  counter-increment:f;position:relative;padding:10px 0 10px 42px;
+  border-bottom:1px dashed var(--line);margin:0;
+}
+.flow li:last-child{border-bottom:0}
+.flow li::before{
+  content:counter(f);position:absolute;left:0;top:10px;
+  width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;
+  font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;
+}
+.flow b{display:block;font-size:14px}
+.flow span{font-size:13px;color:var(--ink-2)}
+
+/* ---------- 체크리스트 ---------- */
+.check{list-style:none;padding:0;margin:8px 0}
+.check li{margin:0;border-bottom:1px solid var(--line)}
+.check li:last-child{border-bottom:0}
+.check label{display:flex;gap:10px;align-items:flex-start;padding:8px 4px;cursor:pointer;font-size:14px}
+.check input{margin:4px 0 0;width:16px;height:16px;flex:0 0 auto;accent-color:var(--accent)}
+.check input:checked + span{color:var(--ink-3);text-decoration:line-through}
+
+/* ---------- 캘린더 ---------- */
+.cal{width:100%;border-collapse:collapse;table-layout:fixed}
+.cal th{text-align:center;font-size:12px;padding:6px;background:#fff;border:0;color:var(--ink-3)}
+.cal td{height:74px;border:1px solid var(--line);padding:6px;font-size:12px;vertical-align:top}
+.cal td .d{font-weight:700;font-size:13px;display:block;margin-bottom:2px}
+.cal td.none{background:#fafafa}
+.cal td.on{background:var(--accent-soft);border-color:#f7cdb6}
+.cal td.on .d{color:var(--accent)}
+.cal td.half{background:#fff7ef}
+.cal td .tag{display:block;color:var(--ink-2);line-height:1.35}
+.cal .sun{color:#c0392b}
+
+/* ---------- 커리큘럼 카드 ---------- */
+.curri{border-collapse:collapse;width:100%}
+.curri td,.curri th{border:1px solid var(--line);padding:9px 10px}
+.curri a{color:var(--ink);font-weight:700;text-decoration:none;border-bottom:2px solid var(--accent)}
+.curri a:hover{color:var(--accent)}
+.curri .wk{background:var(--ink);color:#fff;font-weight:700;font-size:13px;text-align:center}
+
+/* ---------- 하단 이동 ---------- */
+.pager{display:flex;justify-content:space-between;gap:10px;margin-top:24px}
+.pager a{
+  flex:1;background:#fff;border:1px solid var(--line);border-radius:6px;
+  padding:14px 16px;text-decoration:none;color:var(--ink);font-size:13px;
+}
+.pager a:hover{border-color:var(--ink)}
+.pager a.next{text-align:right}
+.pager a b{display:block;font-size:14px;margin-top:2px}
+.pager a.empty{visibility:hidden}
+
+/* ---------- 인쇄 ---------- */
+@media print{
+  body{background:#fff;font-size:11pt}
+  .topbar,.pager,.noprint{display:none !important}
+  header.page{padding:0 0 12px;margin-bottom:14px}
+  .wrap{padding:0}
+  /* 섹션은 페이지를 넘어가도 그대로 이어지게 —
+     break-inside:avoid 를 걸면 페이지보다 긴 섹션이 통째로 다음 장으로 밀려
+     앞 페이지에 빈 공간이 크게 남는다. 대신 아래의 작은 단위만 안 쪼개지게 한다. */
+  section{border:0;border-top:1px solid #ccc;border-radius:0;padding:12px 0;margin:0;break-inside:auto}
+  h1{font-size:20pt}
+  /* 제목만 남고 내용이 다음 장으로 넘어가는 것 방지 */
+  h2,h3,h4{break-after:avoid;break-inside:avoid}
+  /* 박스·표의 한 줄·목록 항목은 중간에 잘리지 않게 */
+  .box,.flow>li,.check>li,ul>li,ol>li{break-inside:avoid}
+  table{break-inside:auto}
+  tr{break-inside:avoid}
+  thead{display:table-header-group}   /* 표가 넘어가면 머리글 반복 */
+  .check input{-webkit-appearance:none;appearance:none;border:1px solid #666;border-radius:2px}
+  a{color:#000;text-decoration:none}
+  @page{margin:14mm 12mm}
+}
