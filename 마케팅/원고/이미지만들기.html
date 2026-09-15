@@ -44,16 +44,18 @@
       <td><code>날짜_브랜드명_메인키워드_각도_01</code></td></tr>
   </table>
   <div class="box warn">
-    <span class="t">★★ 사람이 나오는 이미지는 두 종류입니다 — 섞지 마세요</span>
+    <span class="t">★★ 사람 사진은 전부 「고정 모델」 한 사람으로 만듭니다</span>
+    <p>기준 사진 한 장을 정해놓고 <strong>그 사람의 다른 날 사진</strong>을 계속 만듭니다.
+    매번 다른 얼굴이 나오면 <strong>브랜드가 쌓이지 않습니다.</strong></p>
     <table style="margin-top:8px">
       <tr><th style="width:150px">자막 이미지</th>
-        <td><strong>정면 · 얼굴 크게 · 말하는 장면</strong><br>
-        → <strong>실제 촬영</strong>이어야 합니다. AI로 만들면 바로 티가 납니다</td></tr>
+        <td><strong>카메라를 보며 말하는</strong> 장면 + 큰 자막</td></tr>
       <tr><th>분위기 컷</th>
-        <td><strong>옆모습 · 뒷모습 · 얼굴 작게</strong><br>
-        → <strong>AI로 만들어도 됩니다.</strong> 누구인지 설명하지 않는 컷</td></tr>
+        <td><strong>카메라를 안 보고</strong> 일하는 장면 — 도입 · 문제 대목에</td></tr>
     </table>
-    <p class="small">★ <strong>AI는 얼굴이 클수록 티가 납니다.</strong> 이 한 줄이 기준입니다.</p>
+    <p class="small">★ <strong>AI 티는 얼굴 크기가 아니라 「미화」에서 납니다.</strong>
+    피부가 매끈하고 얼굴이 예뻐지면 들킵니다 —
+    프롬프트에 <strong>미화 금지</strong>가 들어 있는 이유입니다.</p>
   </div>
 
   <h3>보통 이렇게 섞습니다</h3>
@@ -65,7 +67,7 @@
     <tr><td class="c">3</td><td>★ <strong>AI 사람 사진</strong></td>
       <td>분위기 — 고민하는 모습 · 일하는 모습</td></tr>
     <tr><td class="c">4</td><td>★ <strong>자막 이미지</strong></td>
-      <td><strong>실제 촬영</strong> 인물 + 큰 자막 3줄 — 표지나 글 중간에</td></tr>
+      <td>고정 모델 + <strong>큰 자막 3줄</strong> — 표지나 글 중간에</td></tr>
     <tr><td class="c">5</td><td>★★ <strong>도식</strong></td>
       <td>글에서 제일 중요한 내용 <strong>한 장</strong> — 비교표 · 순서도</td></tr>
     <tr><td class="c">6</td><td>회사 자료</td>
@@ -171,98 +173,167 @@
 </section>
 
 <section>
-  <h2>2. ★ AI 사람 사진 — 진짜처럼 나오게</h2>
-  <p>AI로 만든 사진이 <strong>AI처럼 보이면 글 전체가 싸구려로 보입니다.</strong>
-  진짜처럼 나오게 하는 요령이 있습니다.</p>
-
+  <h2>2. ★★ AI 사람 사진 — <span style="color:var(--accent)">고정 모델</span>로 만듭니다</h2>
   <div class="box warn">
-    <span class="t">★★ AI 사람 사진은 「분위기」로만 씁니다</span>
-    <p><strong>고객 · 직원 · 후기 인물로 쓰지 않습니다.</strong>
-    「저희 대표입니다」 「이 고객님은」 같은 설명을 붙이면 <strong>거짓말</strong>이 됩니다.</p>
-    <p class="small">쓸 수 있는 자리 — <strong>고민하는 장면 · 일하는 장면 · 사무실 분위기.</strong>
-    누구인지 설명하지 않는 컷입니다.</p>
-    <p class="small">★ <strong>정면으로 말하는 인물은 AI로 만들지 않습니다.</strong>
-    그건 <a href="#">자막 이미지</a>이고 <strong>실제 촬영</strong>이어야 합니다 —
-    AI는 <strong>얼굴이 클수록 티가 납니다.</strong></p>
+    <span class="t">★ 핵심은 「같은 사람」입니다</span>
+    <p>매번 다른 얼굴이 나오면 <strong>브랜드가 쌓이지 않습니다.</strong>
+    한 사람을 정해놓고 <strong>그 사람의 다른 날 사진</strong>을 계속 만듭니다.</p>
+    <p><strong>방법은 하나입니다 — 기준 사진을 첨부하고 「같은 사람」이라고 지시합니다.</strong></p>
   </div>
 
-  <h3>★ 진짜처럼 보이게 하는 6가지</h3>
+  <h3>만드는 순서</h3>
+  <ol class="flow">
+    <li><b>① 기준 남성 이미지를 첨부한다</b>
+      <span>★ <strong>회사에서 정한 기준 사진</strong>입니다 — 담당자에게 받으세요.
+      <strong>매번 같은 파일</strong>을 씁니다</span></li>
+    <li><b>② 아래 프롬프트를 통째로 붙여넣는다</b>
+      <span>네 덩어리로 되어 있습니다 —
+      <strong>[THIS SCENE] [STYLE] [COMPOSITION] [IMPORTANT]</strong></span></li>
+    <li><b>③ 다음 사진부터는 <span style="color:var(--accent)">[THIS SCENE]</span>만 바꾼다</b>
+      <span>★ 나머지 세 덩어리는 <strong>손대지 않습니다.</strong>
+      기준 사진도 매번 다시 첨부합니다</span></li>
+  </ol>
+
+  <h3>프롬프트 — 그대로 씁니다</h3>
+  <div class="pr">첨부한 이미지 속 남성을 고정 모델로 사용해줘.
+얼굴, 나이, 헤어스타일, 피부톤 등 인물의 정체성을 최대한 동일하게 유지해줘.
+다른 사람이 아니라 같은 사람을 다른 날 촬영한 것처럼 보여야 해.
+
+<b>[THIS SCENE]</b>
+<b>같은 남성이 사무실 책상에 앉아 노트북의 검색 결과를 보고 있다.</b>
+<b>검색 노출이 잘 되지 않아 조금 고민하는 듯한 표정.</b>
+<b>카메라를 쳐다보지 않고 실제 업무 중인 자연스러운 순간.</b>
+<b>측면에서 촬영한 구도.</b>
+
+[STYLE]
+realistic Korean corporate documentary photography,
+real Korean office,
+35mm lens,
+natural window light,
+natural skin texture,
+visible pores and subtle skin imperfections,
+realistic hair strands,
+natural clothing wrinkles,
+slightly muted colors,
+subtle film grain,
+candid photography,
+not posed,
+not a stock photo,
+not overly cinematic,
+not AI-looking.
+
+[COMPOSITION]
+16:9 horizontal.
+Leave generous negative space on the left side for Korean headline typography.
+Place the person on the center-right.
+
+[IMPORTANT]
+Preserve the exact identity of the man in the reference image.
+Do not redesign or beautify his face.
+Do not change his facial proportions.
+Do not make him younger.
+Do not make his skin perfectly smooth.
+
+NO TEXT.
+NO LETTERS.
+NO LOGO.
+NO WATERMARK.
+NO SIGNAGE.</div>
+  <p class="small">★ <strong>굵은 부분([THIS SCENE])만 바꿉니다.</strong></p>
+
+  <h3>★ [THIS SCENE] — 이렇게 바꿔 씁니다</h3>
   <table>
-    <tr><td class="c" style="width:44px">1</td><td style="width:180px"><strong>얼굴을 크게 넣지 않기</strong></td>
-      <td>멀리서 · <strong>뒷모습</strong> · 옆모습 · 어깨 위만 —
-      얼굴이 클수록 <strong>AI 티가 납니다</strong></td></tr>
-    <tr><td class="c">2</td><td><strong>카메라를 안 보게</strong></td>
-      <td>정면을 응시하면 어색합니다. <strong>화면을 보거나 서류를 보는</strong> 모습</td></tr>
-    <tr><td class="c">3</td><td>★ <strong>손을 조심</strong></td>
-      <td>AI가 <strong>손가락을 제일 많이 틀립니다.</strong>
-      손이 안 보이거나 <strong>컵 · 펜을 쥔</strong> 단순한 포즈로</td></tr>
-    <tr><td class="c">4</td><td><strong>글자를 넣지 않기</strong></td>
-      <td>AI는 <strong>한글을 제대로 못 씁니다.</strong>
-      모니터 화면 · 간판 · 서류에 글자가 보이면 <strong>바로 들킵니다</strong></td></tr>
-    <tr><td class="c">5</td><td><strong>너무 예쁘지 않게</strong></td>
-      <td>광고 모델 같으면 가짜로 보입니다.
-      <strong>평범한 · 피곤한 · 진지한</strong> 표정으로</td></tr>
-    <tr><td class="c">6</td><td><strong>한국 사람으로 지정</strong></td>
-      <td>안 적으면 외국인이 나옵니다. <strong>Korean</strong>을 꼭 넣으세요</td></tr>
+    <tr><td class="c" style="width:44px">1</td>
+      <td>사무실 책상에 앉아 <strong>카메라를 바라보며</strong> SEO 전략을 설명하고 있다</td></tr>
+    <tr><td class="c">2</td>
+      <td>노트북 앞에 앉아 카메라를 바라보며 <strong>검색노출의 중요성</strong>을 설명하고 있다</td></tr>
+    <tr><td class="c">3</td>
+      <td><strong>화이트보드 앞에 혼자 서서</strong> 카메라를 바라보며 검색 구조를 설명하고 있다</td></tr>
+    <tr><td class="c">4</td>
+      <td><strong>휴대폰을 한 손에 들고</strong> 카메라를 바라보며 AI 검색 결과에 대해 설명하고 있다</td></tr>
+    <tr><td class="c">5</td>
+      <td><strong>노트북 화면을 한 손으로 가리키면서</strong> 카메라를 바라보며 검색 결과를 설명하고 있다</td></tr>
+    <tr><td class="c">6</td>
+      <td>책상에 앉아 <strong>양손으로 자연스럽게 제스처</strong>를 하며 카메라를 바라보고 있다</td></tr>
+    <tr><td class="c">7</td>
+      <td>카메라를 바라보며 <strong>한 손으로 숫자를 세는 제스처</strong>를 하고 있다</td></tr>
+    <tr><td class="c">8</td>
+      <td><strong>메모장을 펼쳐두고 펜을 든 채</strong> 카메라를 바라보며 설명하고 있다</td></tr>
+    <tr><td class="c">9</td>
+      <td>책상에 살짝 기대어 <strong>팔짱을 낀 채</strong> 카메라를 바라보는 자신감 있는 모습</td></tr>
+    <tr><td class="c">10</td>
+      <td>의자에 편안하게 앉아 카메라를 바라보며 <strong>자연스럽게 이야기하고</strong> 있다</td></tr>
   </table>
-
-  <h3>프롬프트 — 이대로 쓰고 앞부분만 바꾸세요</h3>
-  <div class="pr"><b>A Korean man in his 40s</b> sitting at an office desk,
-looking at a laptop screen with a slightly worried expression,
-<b>seen from the side</b>, hands resting on the desk,
-
-natural window light, muted colors, slightly grainy,
-shot on 35mm film, candid documentary photo,
-shallow depth of field, no text anywhere, realistic skin texture
-
---ar 16:9</div>
-  <p class="small">★ 굵은 부분만 바꾸면 됩니다 —
-  <code>A Korean woman in her 30s</code> / <code>seen from behind</code> 등</p>
-
-  <table>
-    <tr><th style="width:230px">이 말이 하는 일</th><th></th></tr>
-    <tr><td><code>candid documentary photo</code></td>
-      <td><strong>연출 안 한 사진</strong>처럼 — 제일 중요합니다</td></tr>
-    <tr><td><code>natural window light</code></td><td>스튜디오 조명 느낌을 없앱니다</td></tr>
-    <tr><td><code>slightly grainy</code> · <code>35mm film</code></td>
-      <td>너무 깨끗한 <strong>AI 특유의 매끈함</strong>을 없앱니다</td></tr>
-    <tr><td><code>muted colors</code></td><td>색이 쨍하면 AI 티가 납니다</td></tr>
-    <tr><td><code>realistic skin texture</code></td><td>피부가 도자기처럼 나오는 걸 막습니다</td></tr>
-    <tr><td><code>no text anywhere</code></td><td>깨진 글자가 안 나오게</td></tr>
-  </table>
-
-  <h3>브랜드별로 이런 장면</h3>
-  <table>
-    <tr><td style="width:150px"><strong>퍼스트디자인 · 하오디자인</strong></td>
-      <td>책상에 인쇄물 여러 개를 펼쳐놓고 비교하는 손 <span class="muted small">(얼굴 없이)</span></td></tr>
-    <tr><td><strong>하오스튜디오</strong></td>
-      <td>제품을 조명 아래 놓고 각도를 보는 장면</td></tr>
-    <tr><td><strong>하오팩토리</strong></td>
-      <td>넓은 공간에서 설치물을 올려다보는 뒷모습</td></tr>
-    <tr><td><strong>레드트랜스 · 윈차이나</strong></td>
-      <td>서류 봉투를 들고 창구 앞에 선 모습 <span class="muted small">(글자 안 보이게)</span></td></tr>
-    <tr><td><strong>메세지</strong></td>
-      <td>늦은 시간 사무실에서 모니터를 보는 옆모습</td></tr>
-  </table>
+  <p class="small">★ 장면을 쓸 때 <strong>네 가지</strong>를 적습니다 —
+  <strong>어디에 · 무엇을 하며 · 어떤 표정 · 카메라를 보는가</strong>.</p>
 
   <div class="box tip">
-    <span class="t">★ 마음에 안 들면 다시 시키세요</span>
-    <p><strong>한 번에 안 나옵니다.</strong> 보통 3~4번 돌립니다.
-    손가락이 이상하거나 글자가 깨졌으면 <strong>그냥 버리고 다시</strong> 하세요.</p>
-    <p class="small">고쳐 쓰려고 붙들고 있는 게 제일 오래 걸립니다.</p>
+    <span class="t">★ 글에 맞춰 장면을 고릅니다</span>
+    <table style="margin-top:8px">
+      <tr><th style="width:170px">도입 · 문제 장면</th>
+        <td><strong>카메라를 안 보는</strong> 컷 — 노트북을 보며 고민하는 표정</td></tr>
+      <tr><th>설명하는 대목</th>
+        <td><strong>카메라를 보며</strong> 말하는 컷 — 제스처 있는 것</td></tr>
+      <tr><th>자막 이미지 배경</th>
+        <td><strong>카메라를 보는</strong> 컷 + <strong>왼쪽 여백</strong></td></tr>
+    </table>
+  </div>
+
+  <h3>★★ 왜 이 프롬프트가 되는가 — 세 가지 장치</h3>
+  <table>
+    <tr><td style="width:170px"><strong>① 고정 모델</strong></td>
+      <td>기준 사진을 첨부하고 <strong>「같은 사람을 다른 날 촬영」</strong>이라고 지시합니다.
+      <strong>이게 없으면 매번 다른 사람</strong>이 나옵니다</td></tr>
+    <tr><td><strong>② 미화 금지</strong></td>
+      <td>★ <strong>AI 티는 얼굴 크기가 아니라 「미화」에서 납니다</strong><br>
+      <span class="muted small">Do not beautify · Do not make him younger ·
+      Do not make his skin perfectly smooth · visible pores</span></td></tr>
+    <tr><td><strong>③ 왼쪽 여백</strong></td>
+      <td><strong>자막 넣을 자리</strong>를 미리 비웁니다 —
+      인물을 오른쪽에 두게 지시합니다</td></tr>
+  </table>
+  <div class="box warn">
+    <span class="t">★ 이 문장들을 지우지 마세요</span>
+    <p><strong>visible pores and subtle skin imperfections</strong> ·
+    <strong>Do not make his skin perfectly smooth</strong><br>
+    이 두 줄이 <strong>AI 티를 없애는 핵심</strong>입니다. 피부가 매끈하면 바로 들킵니다.</p>
+    <p><strong>NO TEXT / NO LETTERS / NO LOGO</strong><br>
+    AI는 <strong>한글을 제대로 못 씁니다.</strong> 화면 · 간판 · 서류에 글자가 보이면 바로 들킵니다.</p>
+  </div>
+
+  <div class="box warn">
+    <span class="t">★ 나온 사진에서 확인할 것</span>
+    <table style="margin-top:8px">
+      <tr><th style="width:150px">손가락</th>
+        <td>AI가 제일 많이 틀립니다. <strong>개수와 방향</strong>을 보세요</td></tr>
+      <tr><th>글자</th>
+        <td>모니터 · 메모장 · 뒤쪽 서류에 <strong>깨진 글자</strong>가 없는지</td></tr>
+      <tr><th>얼굴</th>
+        <td>★ <strong>기준 사진과 같은 사람</strong>인지 — 다르면 버립니다</td></tr>
+      <tr><th>왼쪽 여백</th>
+        <td>자막이 들어갈 자리가 <strong>비어 있는지</strong></td></tr>
+    </table>
+    <p class="small"><strong>보통 3~4번 돌립니다.</strong>
+    이상하면 고쳐 쓰려 하지 말고 <strong>버리고 다시</strong> 하세요.</p>
+  </div>
+
+  <div class="box warn">
+    <span class="t">★★ 이 사람을 「우리 대표」라고 소개하지 않습니다</span>
+    <p>AI로 만든 사람입니다. <strong>「저희 대표입니다」 「이 고객님은」 같은 설명을 붙이면
+    거짓말</strong>이 됩니다.</p>
+    <p class="small">이름 · 직함 · 따옴표 대사를 붙이지 않으면 대부분 해결됩니다.
+    <strong>자막은 글의 문장</strong>이지 사진 속 사람의 말이 아닙니다.</p>
   </div>
 </section>
 
 <section>
-  <h2>3. ★★ 자막 이미지 — <span style="color:var(--accent)">실제 촬영</span>이어야 합니다</h2>
+  <h2>3. ★ 자막 이미지 — 고정 모델 + 큰 자막</h2>
   <div class="box warn">
-    <span class="t">★ 이건 AI로 만들지 않습니다</span>
-    <p>자막 이미지는 <strong>사람이 정면을 보고 말하는</strong> 장면입니다.
-    <strong>얼굴이 크게 나옵니다.</strong></p>
-    <p><strong>AI는 얼굴이 클수록 티가 납니다.</strong>
-    그래서 이 이미지는 <strong>실제로 찍은 영상이나 사진</strong>에서 가져옵니다.</p>
-    <p class="small">회사에 영상이 없으면 <strong>담당자에게 요청</strong>하세요 —
-    휴대폰으로 30초만 찍어도 캡처는 나옵니다.</p>
+    <span class="t">★ 배경은 위에서 만든 AI 사진을 씁니다</span>
+    <p><strong>카메라를 바라보며 말하는</strong> 장면을 고릅니다 —
+    <a href="#">[THIS SCENE] 예시 1 · 2 · 6 · 10</a>번이 잘 맞습니다.</p>
+    <p class="small">프롬프트에 <strong>「왼쪽에 여백을 남기고 인물을 오른쪽에」</strong>가
+    들어 있는 이유가 이것입니다 — <strong>자막 자리</strong>를 미리 비워둔 것입니다.</p>
   </div>
 
   <div style="position:relative;max-width:520px;background:#8e9296;border-radius:6px;
@@ -304,15 +375,17 @@ shallow depth of field, no text anywhere, realistic skin texture
       <td><strong>빨간 바 한 줄</strong> — 「지금, ○○를 시작하세요」</td></tr>
     <tr><td><strong>오른쪽 위</strong></td><td>로고 작게</td></tr>
     <tr><td><strong>인물 위치</strong></td>
-      <td><strong>가운데~오른쪽.</strong> 자막이 왼쪽 아래에 들어가야 합니다</td></tr>
+      <td><strong>가운데~오른쪽</strong> — 프롬프트가 알아서 그렇게 만듭니다.
+      자막은 <strong>왼쪽 아래</strong></td></tr>
     <tr><td><strong>글씨</strong></td>
       <td>아주 굵게 + <strong>검은 외곽선.</strong> 없으면 배경에 묻힙니다</td></tr>
   </table>
 
   <h3>만드는 법</h3>
   <ol class="flow">
-    <li><b>영상 · 사진에서 프레임을 고른다</b>
-      <span>★ <strong>말하는 중간</strong>이 자연스럽습니다. 입을 다문 정지 컷은 어색합니다</span></li>
+    <li><b>AI 사진을 만든다 — 카메라를 보는 장면으로</b>
+      <span>★ <strong>말하는 중간</strong>이 자연스럽습니다.
+      「설명하고 있다」로 끝나는 장면을 고르세요</span></li>
     <li><b>미리캔버스에 올리고 자막 3줄</b>
       <span>「유튜브 썸네일」 템플릿이 크기가 맞습니다</span></li>
     <li><b>자막 문구는 글에서 그대로 가져온다</b>
@@ -323,11 +396,10 @@ shallow depth of field, no text anywhere, realistic skin texture
   </ol>
 
   <div class="box warn">
-    <span class="t">★★ 영상이 없으면 이 이미지는 만들지 않습니다</span>
-    <p><strong>AI로 정면 인물을 만들어 자막을 얹지 마세요.</strong>
-    얼굴이 크게 들어가는 순간 AI 티가 나고, <strong>글 전체가 싸구려로 보입니다.</strong></p>
-    <p class="small">대신 <strong>글자만 있는 표지</strong>를 만들면 됩니다 —
-    배경은 단색이나 회사 작업물 사진으로.</p>
+    <span class="t">★★ 자막을 「그 사람의 말」로 만들지 마세요</span>
+    <p><strong>따옴표를 쓰지 않습니다.</strong> 이름 · 직함도 붙이지 않습니다.</p>
+    <p class="small">자막은 <strong>글의 문장</strong>입니다. AI로 만든 사람이
+    말하는 것처럼 보이면 거짓말이 됩니다.</p>
   </div>
 </section>
 
@@ -386,9 +458,9 @@ shallow depth of field, no text anywhere, realistic skin texture
       <strong>이름 · 프로필 · 상호가 전부 가려졌는가</strong></td></tr>
     <tr><td class="c">4</td><td>카톡에서 <strong>시간 · 읽음 숫자 · 반응</strong>을 지우지 않았는가</td></tr>
     <tr><td class="c">5</td><td>★ 자막 문구를 <strong>글에서 그대로</strong> 가져왔는가</td></tr>
-    <tr><td class="c">6</td><td>★★ 자막 이미지의 인물이 <strong>실제 촬영</strong>인가
-      <span class="muted small">(AI 정면 인물 ✕)</span></td></tr>
-    <tr><td class="c">4</td><td>★ AI 사람 사진에 <strong>깨진 글자 · 이상한 손가락</strong>이 없는가</td></tr>
+    <tr><td class="c">6</td><td>★★ <strong>기준 사진과 같은 사람</strong>인가 ·
+      얼굴이 <strong>미화되지 않았는가</strong></td></tr>
+    <tr><td class="c">7</td><td>★ AI 사진에 <strong>깨진 글자 · 이상한 손가락</strong>이 없는가</td></tr>
     <tr><td class="c">5</td><td>★★ AI 사람을 <strong>「고객」 「직원」으로 설명하지 않았는가</strong></td></tr>
     <tr><td class="c">6</td><td>★★ <strong>검색 사진</strong>을 쓰지 않았는가</td></tr>
     <tr><td class="c">7</td><td>캡처에 <strong>가릴 것</strong>을 다 가렸는가</td></tr>
