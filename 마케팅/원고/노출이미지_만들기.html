@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>노출 이미지 만들기 — 메세지</title>
+<style>
+:root{
+  --ink:#1a1a1a; --ink-2:#4a4a4a; --ink-3:#8a8a8a;
+  --line:#e5e5e5; --bg:#fff; --bg-2:#fafafa;
+  --accent:#F26522; --accent-soft:#fff3ec;
+  --ok:#1a7f4b; --warn:#b34700;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg-2);color:var(--ink);
+  font:15px/1.7 "Malgun Gothic","맑은 고딕",system-ui,sans-serif}
+header{background:var(--ink);color:#fff;padding:22px 28px}
+header h1{margin:0;font-size:20px;letter-spacing:-.3px}
+header p{margin:6px 0 0;font-size:13px;color:#bbb}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 28px 80px;
+  display:grid;grid-template-columns:330px 1fr;gap:26px;align-items:start}
+@media(max-width:900px){.wrap{grid-template-columns:1fr}}
+
+.panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px}
+.panel h2{margin:0 0 4px;font-size:14px;letter-spacing:-.2px}
+.panel h2 .n{display:inline-block;width:20px;height:20px;line-height:20px;
+  text-align:center;background:var(--accent);color:#fff;border-radius:50%;
+  font-size:11px;margin-right:7px;vertical-align:1px}
+.panel .hint{margin:0 0 14px;font-size:12.5px;color:var(--ink-3);padding-left:27px}
+.panel + .panel{margin-top:16px}
+
+label.f{display:block;margin:12px 0 5px;font-size:12.5px;color:var(--ink-2);font-weight:700}
+input[type=text],select{width:100%;padding:9px 11px;border:1px solid var(--line);
+  border-radius:6px;font:inherit;font-size:14px;background:#fff;color:var(--ink)}
+input[type=text]:focus,select:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+
+.drop{border:2px dashed var(--line);border-radius:8px;padding:26px 14px;text-align:center;
+  cursor:pointer;background:var(--bg-2);transition:.15s}
+.drop:hover,.drop.on{border-color:var(--accent);background:var(--accent-soft)}
+.drop b{display:block;font-size:13.5px;margin-bottom:3px}
+.drop span{font-size:12px;color:var(--ink-3)}
+
+.tools{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px}
+.tool{flex:1;min-width:88px;padding:9px 6px;border:1px solid var(--line);background:#fff;
+  border-radius:6px;cursor:pointer;font:inherit;font-size:12.5px;color:var(--ink-2)}
+.tool.on{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:700}
+.tool:hover:not(.on){border-color:var(--ink-3)}
+
+button.go{width:100%;margin-top:16px;padding:13px;border:0;border-radius:7px;
+  background:var(--accent);color:#fff;font:inherit;font-weight:700;font-size:15px;cursor:pointer}
+button.go:hover{background:#d9541a}
+button.go:disabled{background:#ddd;color:#999;cursor:not-allowed}
+button.sub{width:100%;margin-top:8px;padding:9px;border:1px solid var(--line);
+  border-radius:6px;background:#fff;font:inherit;font-size:13px;color:var(--ink-2);cursor:pointer}
+button.sub:hover{border-color:var(--ink-3)}
+
+.stage{background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px;
+  min-height:420px;display:flex;align-items:center;justify-content:center}
+.stage.empty{color:var(--ink-3);font-size:13.5px;text-align:center;line-height:2}
+#cv{max-width:100%;border:1px solid var(--line);cursor:crosshair;display:block}
+
+.box{border-radius:8px;padding:13px 15px;font-size:12.5px;line-height:1.75;margin-top:16px}
+.box.warn{background:#fff8f2;border:1px solid #f3d9c4;color:#6b3410}
+.box.tip{background:var(--bg-2);border:1px solid var(--line);color:var(--ink-2)}
+.box b{color:var(--warn)}
+.box.tip b{color:var(--ink)}
+.box ul{margin:7px 0 0;padding-left:17px}
+.box li{margin:3px 0}
+.cnt{font-size:12px;color:var(--ink-3);margin-top:9px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>노출 이미지 만들기</h1>
+  <p>실제 노출 캡처 → 원고에 넣을 이미지 · 인터넷 없이도 됩니다</p>
+</header>
+
+<div class="wrap">
+
+<div>
+  <div class="panel">
+    <h2><span class="n">1</span>캡처 올리기</h2>
+    <p class="hint">실제로 검색해서 나온 화면만</p>
+    <div class="drop" id="drop">
+      <b>파일을 끌어다 놓거나 클릭</b>
+      <span>PNG · JPG</span>
+    </div>
+    <input type="file" id="file" accept="image/*" hidden>
+  </div>
+
+  <div class="panel">
+    <h2><span class="n">2</span>가릴 곳 칠하기</h2>
+    <p class="hint">고객사 이름 · 연락처 · 사람 이름</p>
+    <div class="tools">
+      <button class="tool on" data-t="mosaic">모자이크</button>
+      <button class="tool" data-t="black">검은 칠</button>
+      <button class="tool" data-t="off">안 가림</button>
+    </div>
+    <button class="sub" id="undo">방금 것 지우기</button>
+    <div class="cnt" id="cnt">가린 곳 0개</div>
+  </div>
+
+  <div class="panel">
+    <h2><span class="n">3</span>무엇을 확인했는지</h2>
+    <p class="hint">캡처만 있으면 무슨 화면인지 모릅니다</p>
+
+    <label class="f">어디서</label>
+    <select id="src">
+      <option>네이버 검색</option>
+      <option>구글 AI 개요</option>
+      <option>ChatGPT</option>
+      <option>구글 검색</option>
+      <option>퍼플렉시티</option>
+    </select>
+
+    <label class="f">검색한 말</label>
+    <input type="text" id="kw" placeholder="한국 조형물 제작업체 추천해줘">
+
+    <label class="f">확인한 날</label>
+    <input type="text" id="dt" placeholder="2026.09.17">
+
+    <button class="go" id="save" disabled>이미지로 저장</button>
+  </div>
+
+  <div class="box warn">
+    <b>이건 하면 안 됩니다</b>
+    <ul>
+      <li>없었던 카톡 · 문자 · 후기를 만들어 넣기</li>
+      <li>순위나 날짜를 고쳐 쓰기</li>
+      <li>검색해서 나온 남의 사진 쓰기</li>
+    </ul>
+    지어낸 화면은 <b>거짓 광고</b>가 됩니다.
+    캡처가 없으면 이미지를 안 넣으면 됩니다.
+  </div>
+
+  <div class="box tip">
+    <b>카톡 이미지가 꼭 필요하면</b>
+    담당자가 고객에게 <b>실제로</b> 노출 보고를 보내고,
+    그 화면을 캡처해서 받으세요.
+    진짜로 주고받은 것만 씁니다.
+  </div>
+</div>
+
+<div class="stage empty" id="stage">
+  왼쪽에서 캡처를 올리면<br>여기에 나옵니다
+</div>
+
+</div>
+
+<script>
+(function(){
+  var img=null, masks=[], tool='mosaic', drag=null;
+  var W=1100, HEAD=118, FOOT=62, s=1, IH=0;
+
+  var $=function(id){return document.getElementById(id)};
+  var stage=$('stage'), cv=null, ctx=null;
+
+  /* ---------- 파일 ---------- */
+  $('drop').onclick=function(){ $('file').click() };
+  $('file').onchange=function(e){ if(e.target.files[0]) load(e.target.files[0]) };
+  ['dragenter','dragover'].forEach(function(n){
+    $('drop').addEventListener(n,function(e){e.preventDefault();this.classList.add('on')});
+  });
+  ['dragleave','drop'].forEach(function(n){
+    $('drop').addEventListener(n,function(e){e.preventDefault();this.classList.remove('on')});
+  });
+  $('drop').addEventListener('drop',function(e){
+    var f=e.dataTransfer.files[0];
+    if(f && f.type.indexOf('image')===0) load(f);
+  });
+
+  function load(f){
+    var r=new FileReader();
+    r.onload=function(ev){
+      var i=new Image();
+      i.onload=function(){
+        img=i; masks=[];
+        s=W/i.naturalWidth; IH=Math.round(i.naturalHeight*s);
+        build(); draw(); $('save').disabled=false; count();
+      };
+      i.src=ev.target.result;
+    };
+    r.readAsDataURL(f);
+  }
+
+  function build(){
+    stage.classList.remove('empty');
+    stage.innerHTML='';
+    cv=document.createElement('canvas');
+    cv.id='cv'; cv.width=W; cv.height=HEAD+IH+FOOT;
+    ctx=cv.getContext('2d');
+    stage.appendChild(cv);
+    bind();
+  }
+
+  /* ---------- 마스킹 ---------- */
+  function pos(e){
+    var r=cv.getBoundingClientRect(), k=cv.width/r.width;
+    return {x:(e.clientX-r.left)*k, y:(e.clientY-r.top)*k};
+  }
+  function bind(){
+    cv.onmousedown=function(e){
+      if(tool==='off') return;
+      var p=pos(e);
+      if(p.y<HEAD||p.y>HEAD+IH) return;
+      drag={x:p.x,y:p.y,w:0,h:0,t:tool};
+    };
+    cv.onmousemove=function(e){
+      if(!drag) return;
+      var p=pos(e); drag.w=p.x-drag.x; drag.h=p.y-drag.y; draw();
+    };
+    window.addEventListener('mouseup',function(){
+      if(!drag) return;
+      var m=norm(drag); drag=null;
+      if(m.w>6&&m.h>6){ masks.push(m); count() }
+      draw();
+    });
+  }
+  function norm(d){
+    return {x:d.w<0?d.x+d.w:d.x, y:d.h<0?d.y+d.h:d.y,
+            w:Math.abs(d.w), h:Math.abs(d.h), t:d.t};
+  }
+  [].forEach.call(document.querySelectorAll('.tool'),function(b){
+    b.onclick=function(){
+      [].forEach.call(document.querySelectorAll('.tool'),function(x){x.classList.remove('on')});
+      b.classList.add('on'); tool=b.dataset.t;
+      cv&&(cv.style.cursor = tool==='off'?'default':'crosshair');
+    };
+  });
+  $('undo').onclick=function(){ masks.pop(); count(); img&&draw() };
+  function count(){ $('cnt').textContent='가린 곳 '+masks.length+'개' }
+
+  /* ---------- 그리기 ---------- */
+  function draw(){
+    if(!img) return;
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.drawImage(img,0,HEAD,W,IH);
+
+    masks.concat(drag?[norm(drag)]:[]).forEach(function(m){
+      if(m.t==='black'){
+        ctx.fillStyle='#1a1a1a'; ctx.fillRect(m.x,m.y,m.w,m.h);
+      }else{
+        mosaic(m);
+      }
+    });
+
+    header(); footer();
+    ctx.strokeStyle='#e5e5e5'; ctx.lineWidth=1;
+    ctx.strokeRect(.5,HEAD+.5,W-1,IH-1);
+  }
+
+  function mosaic(m){
+    var px=11;
+    var tw=Math.max(1,Math.round(m.w/px)), th=Math.max(1,Math.round(m.h/px));
+    var t=document.createElement('canvas'); t.width=tw; t.height=th;
+    var tc=t.getContext('2d');
+    tc.drawImage(img, m.x/s, (m.y-HEAD)/s, m.w/s, m.h/s, 0,0,tw,th);
+    ctx.imageSmoothingEnabled=false;
+    ctx.drawImage(t,0,0,tw,th,m.x,m.y,m.w,m.h);
+    ctx.imageSmoothingEnabled=true;
+  }
+
+  function header(){
+    var src=$('src').value, kw=$('kw').value.trim();
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,W,HEAD);
+
+    /* 매체 배지 */
+    ctx.font='bold 19px "Malgun Gothic"';
+    var bw=ctx.measureText(src).width+30;
+    ctx.fillStyle='#F26522';
+    round(30,30,bw,36,6); ctx.fill();
+    ctx.fillStyle='#fff';
+    ctx.fillText(src,45,54);
+
+    /* 검색어 */
+    if(kw){
+      ctx.fillStyle='#1a1a1a';
+      ctx.font='bold 27px "Malgun Gothic"';
+      var q='"'+kw+'"', mx=W-60-(30+bw+18);
+      ctx.fillText(fit(q,mx), 30+bw+18, 56);
+    }
+
+    /* 밑줄 */
+    ctx.fillStyle='#1a1a1a'; ctx.fillRect(30,HEAD-26,54,4);
+  }
+
+  function footer(){
+    var y=HEAD+IH;
+    ctx.fillStyle='#fff'; ctx.fillRect(0,y,W,FOOT);
+    ctx.fillStyle='#8a8a8a';
+    ctx.font='15px "Malgun Gothic"';
+    var d=$('dt').value.trim();
+    ctx.fillText('메세지'+(d?'  ·  '+d+' 확인':''), 30, y+37);
+
+    var r='실제 검색 화면입니다';
+    ctx.textAlign='right'; ctx.fillText(r, W-30, y+37); ctx.textAlign='left';
+  }
+
+  function fit(t,max){
+    if(ctx.measureText(t).width<=max) return t;
+    while(t.length>4 && ctx.measureText(t+'..."').width>max) t=t.slice(0,-1);
+    return t+'..."';
+  }
+  function round(x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+  }
+
+  ['src','kw','dt'].forEach(function(id){
+    $(id).oninput=function(){img&&draw()};
+    $(id).onchange=function(){img&&draw()};
+  });
+
+  /* ---------- 저장 ---------- */
+  $('save').onclick=function(){
+    draw();
+    var kw=$('kw').value.trim().replace(/[\\/:*?"<>|]/g,'').slice(0,24);
+    var name='노출_'+$('src').value.replace(/\s/g,'')+(kw?'_'+kw:'')+'.png';
+    cv.toBlob(function(b){
+      var a=document.createElement('a');
+      a.href=URL.createObjectURL(b); a.download=name; a.click();
+      setTimeout(function(){URL.revokeObjectURL(a.href)},1500);
+    });
+  };
+})();
+</script>
+</body>
+</html>

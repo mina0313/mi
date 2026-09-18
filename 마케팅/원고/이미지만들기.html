@@ -9,6 +9,58 @@
 .pr{background:#1e1e1e;color:#e8e8e8;padding:13px 15px;margin:10px 0;border-radius:4px;
     font-family:Consolas,monospace;font-size:12.5px;line-height:1.65;white-space:pre-wrap}
 .pr b{color:#ffb380}
+.pr i{color:#7fd4a0;font-style:normal}
+.pr .ed{background:#3b3320;color:#ffd79a;box-shadow:0 0 0 1px #6b5a2a}
+
+/* 프롬프트 블록 + 복사 */
+.pbox{margin:12px 0;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.pbox .hd{display:flex;align-items:center;gap:10px;padding:9px 13px;background:var(--bg-2);
+  border-bottom:1px solid var(--line)}
+.pbox .hd b{font-size:13px}
+.pbox .hd .sp{flex:1}
+.pbox .cp{border:1px solid var(--line);background:#fff;border-radius:5px;padding:5px 12px;
+  font:inherit;font-size:12px;cursor:pointer;color:var(--ink-2)}
+.pbox .cp:hover{border-color:var(--accent);color:var(--accent)}
+.pbox .cp.ok{background:var(--accent);border-color:var(--accent);color:#fff}
+.pbox .pr{margin:0;border-radius:0;max-height:330px;overflow:auto}
+.pbox.open .pr{max-height:none}
+.pbox .more{width:100%;border:0;border-top:1px solid #333;background:#2a2a2a;color:#bbb;
+  padding:7px;font:inherit;font-size:12px;cursor:pointer}
+.pbox .more:hover{color:#fff}
+
+/* 2종 비교 */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+@media(max-width:700px){.two{grid-template-columns:1fr}}
+.two .c{border:1px solid var(--line);border-radius:6px;padding:14px;background:#fff}
+.two .c .n{display:inline-block;background:var(--ink);color:#fff;border-radius:3px;
+  padding:1px 7px;font-size:11px;font-weight:700;margin-bottom:7px}
+.two .c.b .n{background:var(--accent)}
+.two .c h4{margin:0 0 8px;font-size:14px;color:var(--ink)}
+.two .c p{margin:0;font-size:12.5px;color:var(--ink-2);line-height:1.7}
+
+/* 자막 미리보기 */
+.mock{position:relative;border-radius:5px;overflow:hidden;background:#6f7479;
+  aspect-ratio:16/9;margin:10px 0}
+.mock .ph{position:absolute;inset:0;background:linear-gradient(115deg,#9aa0a6 0%,#6f7479 55%,#585c60 100%)}
+.mock .lg{position:absolute;top:5%;right:4%;font:700 11px/1 sans-serif;color:#0b1f4d;
+  background:rgba(255,255,255,.9);padding:4px 7px;border-radius:3px;letter-spacing:-.3px}
+.mock .tp{position:absolute;top:6%;left:4%;background:rgba(0,0,0,.55);color:#fff;
+  padding:4px 9px;border-radius:11px;font-size:10.5px;font-weight:700}
+.mock .tp.red{background:var(--accent)}
+.mock .mn{position:absolute;left:4%;bottom:9%;color:#fff;font-weight:800;
+  font-size:clamp(13px,2.7vw,21px);line-height:1.35;letter-spacing:-.5px;
+  text-shadow:0 2px 6px rgba(0,0,0,.6)}
+.mock .mn em{color:#ff7a59;font-style:normal}
+.mock .bt{position:absolute;left:50%;transform:translateX(-50%);bottom:7%;width:86%;
+  text-align:center;color:#fff;font-weight:700;font-size:clamp(11px,2vw,15px);
+  line-height:1.45;text-shadow:0 2px 5px rgba(0,0,0,.7)}
+.mock .bt em{color:#ffd83d;font-style:normal}
+
+@media print{
+  .pbox .pr{max-height:none !important;overflow:visible !important}
+  .pbox .cp,.pbox .more{display:none}
+  .pbox{break-inside:auto}
+}
 </style>
 </head>
 <body>
@@ -70,87 +122,523 @@
       <span class="muted">— 바꾸지 않습니다</span></p>
   </div>
 
-  <h3>프롬프트 — <span style="color:var(--accent)">[THIS SCENE]</span>만 바꿉니다</h3>
-  <div class="pr">첨부한 이미지 속 남성을 고정 모델로 사용해줘.
-얼굴, 나이, 헤어스타일, 피부톤 등 인물의 정체성을 최대한 동일하게 유지해줘.
-다른 사람이 아니라 같은 사람을 다른 날 촬영한 것처럼 보여야 해.
+  <h3>첨부 파일 2개 — 매번 같이 넣습니다</h3>
+  <div class="two">
+    <div class="c">
+      <span class="n">첫 번째</span>
+      <h4>기준 모델</h4>
+      <p>인물 정체성 유지용.<br>바꾸지 않습니다.</p>
+      <p class="small" style="margin-top:8px">
+        <a href="assets/기준모델.png" download><strong>내려받기</strong></a></p>
+    </div>
+    <div class="c b">
+      <span class="n">두 번째</span>
+      <h4>메세지 공식 로고</h4>
+      <div style="border:1px solid var(--line);padding:9px 11px;background:#fff;
+                  border-radius:4px;margin:6px 0">
+        <img src="assets/메세지로고.png" alt="메세지 로고" style="width:100%;display:block">
+      </div>
+      <p class="small" style="margin:0">
+        <a href="assets/메세지로고.png" download><strong>내려받기</strong></a>
+        <span class="muted">— 화면 오른쪽 위에 넣습니다</span></p>
+    </div>
+  </div>
+  <div class="box warn">
+    <span class="t">★ 로고를 새로 그리게 하지 마세요</span>
+    <p class="small">AI가 로고를 「비슷하게」 다시 그리면 <strong>다른 회사 로고</strong>가 됩니다.
+    첨부 파일을 <strong>그대로 올려놓는 것</strong>이어야 합니다.<br>
+    나온 이미지에서 <strong>messeze 철자 · 점 위치 · 남색/파란색</strong>을 꼭 확인하세요.</p>
+  </div>
 
-<b>[THIS SCENE]
-같은 남성이 사무실 책상에 앉아 노트북의 검색 결과를 보고 있다.
-검색 노출이 잘 되지 않아 조금 고민하는 듯한 표정.
-카메라를 쳐다보지 않고 실제 업무 중인 자연스러운 순간.
-측면에서 촬영한 구도.</b>
 
-[STYLE]
+  <h3>두 가지를 섞어 씁니다</h3>
+  <div class="two">
+    <div class="c">
+      <span class="n">1번</span>
+      <h4>썸네일형 — 큰 문구</h4>
+      <div class="mock">
+        <div class="ph"></div>
+        <div class="tp">AI 답변에 우리 회사가 없다면</div>
+        <div class="lg">messeze</div>
+        <div class="mn">검색 3페이지는 있어도<br><em>AI 답변엔 없습니다</em></div>
+      </div>
+      <p><strong>표지 · 첫 이미지</strong>에 씁니다.<br>
+      멀리서도 읽히고, 한 줄로 주제를 던집니다.</p>
+    </div>
+    <div class="c b">
+      <span class="n">2번</span>
+      <h4>인터뷰 자막형 — 영상 캡처처럼</h4>
+      <div class="mock">
+        <div class="ph"></div>
+        <div class="tp red">Q. AEO는 뭐부터 하나요?</div>
+        <div class="lg">messeze</div>
+        <div class="bt">고객이 어떤 말로 찾는지<br><em>질문부터 정리</em>했어요</div>
+      </div>
+      <p><strong>본문 사이사이</strong>에 씁니다.<br>
+      <strong>인터뷰 영상을 보다가 일시정지한 화면</strong>처럼 보여야 합니다.
+      그래서 자막이 작습니다.</p>
+    </div>
+  </div>
+  <p class="small">★ 한 편에 <strong>표지는 1번, 본문은 2번</strong>으로 쓰면 됩니다.
+  1번만 여러 장 넣으면 광고 전단처럼 보입니다.</p>
+
+  <table>
+    <tr><th style="width:96px"></th>
+      <th style="width:calc(50% - 48px)">1번 썸네일형</th><th>2번 인터뷰 자막형</th></tr>
+    <tr><td><strong>느낌</strong></td>
+      <td>유튜브 썸네일</td><td><strong>영상 일시정지 화면</strong></td></tr>
+    <tr><td><strong>글자</strong></td>
+      <td>크게 — 멀리서도 읽힘</td><td><strong>작게</strong> — 화면 높이의 12~18%</td></tr>
+    <tr><td><strong>자리</strong></td>
+      <td>왼쪽에 크게</td><td>위에 <strong>Q.</strong> · 아래 <strong>가운데 대사</strong></td></tr>
+    <tr><td><strong>인물</strong></td>
+      <td>오른쪽 (왼쪽은 문구 자리)</td><td><strong>가운데</strong> — 사진이 주인공</td></tr>
+    <tr><td><strong>강조색</strong></td>
+      <td>코랄 레드</td><td><strong>노란색</strong> (Q. 박스만 코랄 레드)</td></tr>
+    <tr><td><strong>말투</strong></td>
+      <td>제목처럼</td><td><strong>말하듯</strong> — 「~했어요」 「저희는」</td></tr>
+  </table>
+  <div class="box warn">
+    <span class="t">★ 2번을 크게 만들면 1번이 되어버립니다</span>
+    <p class="small">자막이 커지고 왼쪽으로 몰리면 그냥 썸네일입니다.
+    2번은 <strong>사진이 주인공이고 자막은 거들 뿐</strong>입니다.<br>
+    나온 이미지가 <strong>포스터처럼 보이면 버리고 다시</strong> 돌리세요.</p>
+  </div>
+
+
+  <h3>두 프롬프트에서 손대는 자리는 2곳뿐입니다</h3>
+  <table>
+    <tr><th style="width:150px"><span style="color:#2f9e63">[ARTICLE CONTENT]</span></th>
+      <td><strong>원고 전체</strong>를 붙여넣습니다.
+      문구를 AI가 여기서 뽑습니다.<br>
+      <span class="muted small">→ 그래서 <strong>원고 컨펌이 끝난 뒤에</strong> 이미지를 만듭니다</span></td></tr>
+    <tr><th><span style="color:#b8860b">[THIS SCENE]</span></th>
+      <td>★ <strong>포즈를 바꿀 때 고치는 자리</strong>입니다.<br>
+      <span class="muted small">아래 목록에서 하나 골라 이 단락을 <strong>통째로 갈아끼웁니다</strong></span></td></tr>
+  </table>
+  <div class="box warn">
+    <span class="t">★ 나머지는 건드리지 마세요</span>
+    <p class="small">인물 유지 · 피부 질감 · 로고 규칙 · 자막 크기가 전부 나머지 부분에 걸려 있습니다.
+    한 줄만 지워도 <strong>다른 사람 얼굴</strong>이 나오거나 <strong>로고가 새로 그려집니다.</strong></p>
+  </div>
+
+
+  <h3><span style="color:var(--accent)">[THIS SCENE]</span> — 포즈 바꿔 쓰기</h3>
+  <p class="small"><strong>첫 장</strong>은 그대로 돌립니다 — AI가 원고를 읽고 알아서 고릅니다.<br>
+  <strong>두 번째 장부터</strong> 같은 원고로 다른 컷이 필요할 때,
+  이 단락만 바꿔서 다시 돌립니다.</p>
+  <table>
+    <tr><th class="c" style="width:40px"></th><th>장면</th><th style="width:74px">어디에</th></tr>
+    <tr><td class="c">1</td>
+      <td>책상에 앉아 <strong>카메라를 바라보며</strong> 설명하고 있다</td>
+      <td class="c">1 · 2</td></tr>
+    <tr><td class="c">2</td>
+      <td><strong>노트북 화면을 한 손으로 가리키며</strong> 설명하고 있다</td>
+      <td class="c">1 · 2</td></tr>
+    <tr><td class="c">3</td>
+      <td><strong>화이트보드 앞에 서서</strong> 검색 구조를 설명하고 있다</td>
+      <td class="c">1 · 2</td></tr>
+    <tr><td class="c">4</td>
+      <td><strong>휴대폰을 한 손에 들고</strong> AI 검색 결과를 설명하고 있다</td>
+      <td class="c">1 · 2</td></tr>
+    <tr><td class="c">5</td>
+      <td><strong>메모장을 펼치고 펜을 든 채</strong> 설명하고 있다</td>
+      <td class="c">1 · 2</td></tr>
+    <tr><td class="c">6</td>
+      <td>회의 테이블에 앉아 <strong>양손으로 제스처</strong>를 하고 있다</td>
+      <td class="c">2</td></tr>
+    <tr><td class="c">7</td>
+      <td><strong>한 손으로 숫자를 세는 제스처</strong>를 하며 말하고 있다</td>
+      <td class="c">2</td></tr>
+    <tr><td class="c">8</td>
+      <td>의자에 편안하게 앉아 자연스럽게 이야기하고 있다</td>
+      <td class="c">2</td></tr>
+    <tr><td class="c">9</td>
+      <td>노트북의 검색 결과를 보며 <strong>카메라를 안 보고</strong>
+        고민하는 표정</td>
+      <td class="c">1</td></tr>
+    <tr><td class="c">10</td>
+      <td>책상에 기대어 <strong>팔짱을 낀 채</strong> 카메라를 바라보고 있다</td>
+      <td class="c">1</td></tr>
+  </table>
+  <p class="small">★ <strong>도입 · 문제 장면</strong>에는 카메라를 <strong>안 보는</strong> 컷(9번),
+  <strong>설명하는 대목</strong>에는 <strong>보는</strong> 컷.<br>
+  ★ 2번 인터뷰형은 <strong>앉거나 서서 말하는 컷</strong>만 씁니다 —
+  팔짱이나 딴 곳을 보는 컷은 인터뷰로 안 보입니다.</p>
+  <div class="pr">예) 4번으로 바꿀 때 — <b>[THIS SCENE]</b> 단락을 이렇게 갈아끼웁니다
+
+<span class="ed">[THIS SCENE]
+
+고정 모델인 남성 한 명만 등장하게 해줘.
+휴대폰을 한 손에 들고 화면을 확인하면서
+카메라를 바라보며 설명하는 장면으로 구성해줘.
+원고에 맞는 사무실 환경을 선택해줘.</span></div>
+
+
+  <h3>프롬프트 1 — 썸네일형</h3>
+  <div class="pbox" id="p1">
+    <div class="hd"><b>큰 문구가 들어가는 표지용</b><span class="sp"></span>
+      <button class="cp" data-t="p1">복사</button></div>
+    <div class="pr">[TASK]
+
+첨부한 고정 모델 이미지와 공식 로고, 아래 원고를 활용하여
+사진과 한국어 자막이 함께 들어간 완성형 이미지 1장을 만들어줘.
+
+유튜브 마케팅 콘텐츠의 썸네일처럼,
+원고의 핵심 메시지가 크고 선명하게 전달되도록 구성해줘.
+
+[REFERENCE IMAGES]
+
+첫 번째 첨부 이미지: 고정 모델의 인물 기준 사진.
+두 번째 첨부 이미지: 메세지 공식 로고.
+
+첫 번째 이미지는 인물의 정체성 유지에 사용하고,
+두 번째 이미지는 화면에 삽입할 공식 로고로만 사용해줘.
+
+고정 모델의 얼굴, 나이, 헤어스타일, 피부톤,
+눈·코·입과 얼굴 비율을 최대한 동일하게 유지해줘.
+비슷한 다른 사람이 아니라 같은 사람을 다른 날 촬영한 것처럼 보여야 해.
+
+[ARTICLE CONTENT]
+
+아래 원고를 읽고 핵심 주제, 독자의 고민,
+브랜드의 관점과 해결 방향을 파악해줘.
+
+원고:
+<i>여기에 원고 전체를 붙여넣어 주세요.</i>
+
+<span class="ed">[THIS SCENE]
+
+원고의 핵심 내용에 어울리는 자연스러운 사무실 장면을 선택해줘.
+
+고정 모델인 남성 한 명만 등장하게 해줘.
+카메라를 바라보며 설명하기, 노트북으로 검색 결과 확인하기,
+화이트보드 앞에서 설명하기, 휴대폰 확인하기 등
+원고에 맞는 업무 상황으로 구성해줘.</span>
+
+과장된 표정이나 광고 모델 같은 포즈는 피하고,
+실제 업무나 인터뷰 도중 촬영한 자연스러운 순간으로 표현해줘.
+
+참고 사진의 인물 정체성은 유지하되,
+장면에 필요한 자세, 손동작, 시선과 환경은 자연스럽게 구성해줘.
+
+[PHOTO STYLE]
+
 realistic Korean corporate documentary photography,
 real Korean office,
 35mm lens,
 natural window light,
 natural skin texture,
-visible pores and subtle skin imperfections,
+<b>visible pores and subtle skin imperfections,</b>
 realistic hair strands,
 natural clothing wrinkles,
 slightly muted colors,
 subtle film grain,
 candid photography,
-not posed,
 not a stock photo,
 not overly cinematic,
 not AI-looking.
 
+<b>피부를 지나치게 매끈하게 만들거나 얼굴을 미화하지 마.
+인물을 더 젊게 만들거나 얼굴 비율을 변경하지 마.</b>
+
 [COMPOSITION]
-16:9 horizontal.
-Leave generous negative space on the left side for Korean headline typography.
-Place the person on the center-right.
 
-[IMPORTANT]
-Preserve the exact identity of the man in the reference image.
-Do not redesign or beautify his face.
-Do not change his facial proportions.
-Do not make him younger.
-Do not make his skin perfectly smooth.
+16:9 가로형으로 제작해줘.
 
-NO TEXT.
-NO LETTERS.
-NO LOGO.
-NO WATERMARK.
-NO SIGNAGE.</div>
+인물은 화면 중앙보다 오른쪽에 배치하고,
+왼쪽에는 메인 문구를 넣을 여백을 충분히 확보해줘.
 
-  <h3>[THIS SCENE] — 바꿔 쓸 장면</h3>
-  <table>
-    <tr><td class="c" style="width:44px">1</td>
-      <td>사무실 책상에 앉아 <strong>카메라를 바라보며</strong> SEO 전략을 설명하고 있다</td></tr>
-    <tr><td class="c">2</td>
-      <td>노트북 앞에 앉아 카메라를 바라보며 검색노출의 중요성을 설명하고 있다</td></tr>
-    <tr><td class="c">3</td>
-      <td><strong>화이트보드 앞에 혼자 서서</strong> 카메라를 바라보며 검색 구조를 설명하고 있다</td></tr>
-    <tr><td class="c">4</td>
-      <td><strong>휴대폰을 한 손에 들고</strong> 카메라를 바라보며 AI 검색 결과를 설명하고 있다</td></tr>
-    <tr><td class="c">5</td>
-      <td><strong>노트북 화면을 한 손으로 가리키면서</strong> 카메라를 바라보며 설명하고 있다</td></tr>
-    <tr><td class="c">6</td>
-      <td>책상에 앉아 <strong>양손으로 제스처</strong>를 하며 카메라를 바라보고 있다</td></tr>
-    <tr><td class="c">7</td>
-      <td>카메라를 바라보며 <strong>한 손으로 숫자를 세는 제스처</strong>를 하고 있다</td></tr>
-    <tr><td class="c">8</td>
-      <td><strong>메모장을 펼쳐두고 펜을 든 채</strong> 카메라를 바라보며 설명하고 있다</td></tr>
-    <tr><td class="c">9</td>
-      <td>책상에 기대어 <strong>팔짱을 낀 채</strong> 카메라를 바라보는 자신감 있는 모습</td></tr>
-    <tr><td class="c">10</td>
-      <td>의자에 편안하게 앉아 카메라를 바라보며 자연스럽게 이야기하고 있다</td></tr>
-  </table>
-  <p class="small">★ <strong>도입 · 문제 장면</strong>에는 카메라를 <strong>안 보는</strong> 컷,
-  <strong>설명하는 대목 · 표지</strong>에는 카메라를 <strong>보는</strong> 컷.</p>
+인물의 얼굴과 주요 행동이 보이도록 구성하고,
+자막이 얼굴을 가리지 않게 해줘.
+
+모든 자막과 로고는 화면 가장자리에서
+최소 화면 너비의 4% 정도 여백을 확보해줘.
+
+[TEXT CREATION]
+
+원고 제목을 그대로 복사하지 말고,
+원고의 방향성에 맞는 이미지용 문구를 직접 작성해줘.
+
+1. 상단 보조 문구
+
+* 원고의 주제를 설명하는 짧은 문구.
+* 공백 포함 약 18~28자.
+* 원고의 핵심 키워드를 자연스럽게 포함.
+* 메인 자막과 같은 문장을 반복하지 않기.
+
+2. 메인 자막
+
+* 원고에서 가장 중요한 메시지 한 가지를 선택.
+* 독자의 고민 또는 원고의 핵심 해결 방향이 드러나게 작성.
+* 공백 포함 약 25~45자, 2~3줄로 구성.
+* 글자 수보다 자연스러운 의미 전달을 우선.
+* 원고의 핵심 키워드를 문맥에 맞게 포함.
+* 단어 중간에서 끊지 말고 의미 단위로 줄바꿈.
+<b>* 원고에 없는 성과, 수치, 고객 사례, 보장 표현을 만들지 않기.
+* 원고가 설명하지 않는 원인이나 결과를 단정하지 않기.</b>
+* 상투적인 광고 문구나 과도한 공포·낚시성 표현 금지.
+
+문구 후보를 여러 개 이미지에 넣지 말고,
+가장 적합한 한 세트만 선택해서 적용해줘.
+
+[TYPOGRAPHY DESIGN]
+
+상단 보조 문구:
+화면 왼쪽 상단에 작은 반투명 검정색 둥근 박스를 배치하고,
+박스 안에 굵은 흰색 한국어 고딕체로 넣어줘.
+
+메인 자막:
+화면 왼쪽에서 왼쪽 하단을 중심으로 크게 배치해줘.
+굵고 선명한 한국어 산세리프체를 사용하고,
+모바일에서도 읽기 쉬운 크기로 구성해줘.
+
+기본 글자는 흰색으로,
+가장 중요한 핵심 구절 하나는 코랄 레드로 강조해줘.
+코랄 레드는 자막에만 사용하고 공식 로고 색상은 바꾸지 마.
+
+얇은 검정 외곽선이나 부드러운 그림자로 가독성을 확보해줘.
+필요할 때만 자막 뒤에 은은한 어두운 그라데이션을 추가해줘.
+사진 전체를 과하게 어둡게 만들지 마.
+
+별도의 포스터 배경을 만들지 말고,
+사진 위에 자막이 자연스럽게 올라간 형태로 완성해줘.
+
+[OFFICIAL BRAND LOGO]
+
+두 번째 첨부 이미지의 메세지 공식 로고를
+화면 오른쪽 상단에 작고 깔끔하게 배치해줘.
+
+<b>로고를 일반 글꼴로 다시 쓰거나 새로 디자인하지 마.</b>
+원본의 심벌, 소문자 “messeze” 글자 형태,
+자간, 가로세로 비율과 색상을 유지해줘.
+
+첨부 로고의 짙은 남색과 파란색 계열 색상을 그대로 사용해줘.
+흰색 로고로 바꾸거나 코랄 레드 점을 추가하지 마.
+
+로고가 잘 보이도록 오른쪽 상단 배경을 밝고 단순하게 구성해줘.
+투명 로고 파일이면 투명 배경을 그대로 사용해줘.
+불투명한 단색 배경이 있다면 로고 가장자리를 훼손하지 않는 범위에서
+배경만 제거하고 심벌과 글자를 배치해줘.
+
+로고 너비는 화면 너비의 약 12~16%로 설정하고,
+원본 비율을 유지해줘.
+로고에 그림자, 외곽선, 발광 효과나 장식을 추가하지 마.
+
+로고를 사무실 간판, 의상, 노트북 등에 넣지 말고,
+영상 위에 겹쳐 넣는 브랜드 표시로 한 번만 사용해줘.
+
+[FINAL CHECK]
+
+사진과 자막이 함께 있는 완성 이미지 1장으로 출력해줘.
+한글의 맞춤법, 띄어쓰기와 글자 누락을 확인해줘.
+상단 문구, 메인 자막, 공식 로고 외의 불필요한 텍스트는 넣지 마.
+재생 버튼, 진행바, 조회수 등 유튜브 UI는 넣지 마.
+공식 로고 외의 임의 워터마크는 넣지 마.</div>
+    <button class="more" data-t="p1">전체 보기</button>
+  </div>
+
+
+  <h3>프롬프트 2 — 인터뷰 자막형</h3>
+  <p class="small">실제 인터뷰 <strong>영상의 한 장면을 캡처한 것처럼</strong> 만듭니다.
+  본문 사이사이에 넣습니다.</p>
+  <div class="pbox" id="p2">
+    <div class="hd"><b>영상 캡처 같은 인터뷰 자막형</b><span class="sp"></span>
+      <button class="cp" data-t="p2">복사</button></div>
+    <div class="pr">[TASK]
+
+첨부한 고정 모델 이미지와 공식 로고, 아래 원고를 활용하여
+사진과 한국어 인터뷰 자막이 함께 들어간 완성형 이미지 1장을 만들어줘.
+
+광고 포스터나 큰 글씨의 썸네일이 아니라,
+실제 기업 인터뷰 영상의 한 장면을 캡처한 것처럼 구성해줘.
+
+[REFERENCE IMAGES]
+
+첫 번째 첨부 이미지: 고정 모델의 인물 기준 사진.
+두 번째 첨부 이미지: 메세지 공식 로고.
+
+첫 번째 이미지는 인물의 정체성 유지에 사용하고,
+두 번째 이미지는 화면에 삽입할 공식 로고로만 사용해줘.
+
+고정 모델의 얼굴, 나이, 헤어스타일, 피부톤,
+눈·코·입과 얼굴 비율을 최대한 동일하게 유지해줘.
+비슷한 다른 사람이 아니라 같은 사람을 다른 날 촬영한 것처럼 보여야 해.
+
+[ARTICLE CONTENT]
+
+아래 원고를 읽고 핵심 주제, 독자의 고민,
+브랜드의 관점과 해결 방향을 파악해줘.
+
+원고:
+<i>여기에 원고 전체를 붙여넣어 주세요.</i>
+
+<span class="ed">[THIS SCENE]
+
+원고의 내용을 설명하는 인터뷰 장면을 구성해줘.
+
+고정 모델인 남성 한 명만 등장하게 해줘.
+사무실 책상이나 회의 테이블에 앉아 설명하거나,
+화이트보드 옆에서 설명하는 등 원고에 맞는 환경을 선택해줘.</span>
+
+시선은 카메라 또는 카메라 바로 옆의 인터뷰어 방향으로 설정해줘.
+인터뷰어와 다른 인물은 화면에 등장시키지 마.
+
+자연스러운 표정과 절제된 손동작으로,
+말하는 도중 포착된 순간처럼 표현해줘.
+과장된 표정이나 광고 모델 같은 포즈는 피해야 해.
+
+참고 사진의 인물 정체성은 유지하되,
+장면에 필요한 자세, 손동작과 환경은 자연스럽게 구성해줘.
+
+[PHOTO STYLE]
+
+realistic Korean corporate documentary photography,
+real Korean office,
+natural business interview,
+35mm lens,
+natural window light,
+natural skin texture,
+<b>visible pores and subtle skin imperfections,</b>
+realistic hair strands,
+natural clothing wrinkles,
+slightly muted colors,
+subtle film grain,
+candid interview moment,
+not a stock photo,
+not overly cinematic,
+not AI-looking.
+
+<b>피부를 지나치게 매끈하게 만들거나 얼굴을 미화하지 마.
+인물을 더 젊게 만들거나 얼굴 비율을 변경하지 마.</b>
+
+[COMPOSITION]
+
+16:9 가로형으로 제작해줘.
+
+인물은 화면 중앙 또는 중앙에서 약간 오른쪽에 배치해줘.
+머리부터 상반신과 자연스러운 손동작이 보이는 구도로 구성해줘.
+
+썸네일처럼 왼쪽에 큰 문구 공간을 만들 필요는 없어.
+사진과 인물이 중심이 되고, 자막은 이를 보조해야 해.
+
+왼쪽 상단에는 작은 질문 라벨,
+오른쪽 상단에는 공식 로고,
+하단 중앙에는 1~2줄 대사 자막이 들어갈 공간을 확보해줘.
+
+모든 자막과 로고는 화면 가장자리에서
+최소 화면 너비의 4% 정도 여백을 확보해줘.
+
+[TEXT CREATION]
+
+원고를 바탕으로 서로 연결되는 질문과 답변 한 세트를 작성해줘.
+
+1. 상단 질문 자막
+
+* 원고에서 실제로 답하고 있는 핵심 질문을 선택.
+* 문장 앞에 “Q.” 표시.
+* “Q.”를 제외하고 공백 포함 약 12~22자.
+* 원고 제목을 그대로 복사하지 않기.
+* 짧더라도 자연스러운 질문으로 작성.
+
+2. 하단 인터뷰 대사
+
+* 상단 질문에 직접 답하는 내용으로 작성.
+* 원고의 핵심 주장 또는 해결 방향 한 가지를 담기.
+* 실제 사람이 설명하는 자연스러운 존댓말 문장으로 작성.
+* 공백 포함 약 25~45자, 1~2줄로 구성.
+* 글자 수보다 자연스러운 의미 전달을 우선.
+* “~합니다”, “~해야 합니다”, “~부터 확인해야 해요” 등
+  원고의 어조에 맞는 말투를 사용.
+* 브랜드의 행동을 설명할 경우 “저희는” 등 1인칭 관점 사용.
+* 모든 문장에 브랜드명이나 전문용어를 억지로 넣지 않기.
+* 광고 슬로건, 제목형 문구, 단어 나열로 작성하지 않기.
+<b>* 원고에 없는 성과, 수치, 사례나 보장 표현을 만들지 않기.
+* 원고에 없는 실제 인터뷰 발언을 인용한 것처럼 표시하지 않기.</b>
+
+상단 질문과 하단 답변이 같은 내용을 반복하지 않도록 해줘.
+문구 후보를 여러 개 이미지에 넣지 말고,
+가장 적합한 한 세트만 선택해서 적용해줘.
+
+[SUBTITLE DESIGN]
+
+상단 질문:
+왼쪽 상단에 작은 코랄 레드 색상의 둥근 박스를 배치해줘.
+그 안에 흰색의 굵은 한국어 고딕체로 질문을 넣어줘.
+인터뷰 영상의 주제 라벨처럼 작고 단정하게 구성해줘.
+
+하단 대사:
+화면 하단 중앙에 가운데 정렬로 배치해줘.
+굵고 선명한 한국어 고딕체를 사용하고,
+의미 단위로 자연스럽게 줄바꿈해줘.
+
+기본 글자는 흰색으로 표현하고,
+핵심 단어나 짧은 구절 1~2개만 노란색으로 강조해줘.
+한 문장 전체를 강조색으로 칠하지 마.
+
+글자에는 얇은 검정 외곽선과 부드러운 그림자를 적용해줘.
+굵은 입체 효과나 과한 장식은 넣지 마.
+
+글자 크기는 1920×1080 화면 기준 약 54~68px 느낌으로,
+모바일에서 읽히되 화면을 압도하지 않는 크기로 구성해줘.
+하단 자막 전체 높이는 화면 높이의 약 12~18% 안으로 유지해줘.
+
+얼굴은 절대 가리지 말고,
+가능하면 중요한 손동작도 가리지 않도록 구도를 조정해줘.
+커다란 자막 박스나 강한 검정 그라데이션은 사용하지 마.
+
+[OFFICIAL BRAND LOGO]
+
+두 번째 첨부 이미지의 메세지 공식 로고를
+화면 오른쪽 상단에 작고 깔끔하게 배치해줘.
+
+<b>로고를 일반 글꼴로 다시 쓰거나 새로 디자인하지 마.</b>
+원본의 심벌, 소문자 “messeze” 글자 형태,
+자간, 가로세로 비율과 색상을 유지해줘.
+
+첨부 로고의 짙은 남색과 파란색 계열 색상을 그대로 사용해줘.
+흰색 로고로 바꾸거나 코랄 레드 점을 추가하지 마.
+
+로고가 잘 보이도록 오른쪽 상단 배경을 밝고 단순하게 구성해줘.
+투명 로고 파일이면 투명 배경을 그대로 사용해줘.
+불투명한 단색 배경이 있다면 로고 가장자리를 훼손하지 않는 범위에서
+배경만 제거하고 심벌과 글자를 배치해줘.
+
+로고 너비는 화면 너비의 약 10~13%로 설정하고,
+원본 비율을 유지해줘.
+로고에 그림자, 외곽선, 발광 효과나 장식을 추가하지 마.
+
+로고를 사무실 간판, 의상, 노트북 등에 넣지 말고,
+영상 위에 겹쳐 넣는 브랜드 표시로 한 번만 사용해줘.
+
+[FINAL CHECK]
+
+사진과 자막이 함께 있는 완성 이미지 1장으로 출력해줘.
+한글의 맞춤법, 띄어쓰기와 글자 누락을 확인해줘.
+상단 질문, 하단 대사, 공식 로고 외의 불필요한 텍스트는 넣지 마.
+광고 포스터나 큰 글씨의 썸네일처럼 만들지 마.
+재생 버튼, 진행바, 조회수 등 유튜브 UI는 넣지 마.
+공식 로고 외의 임의 워터마크는 넣지 마.</div>
+    <button class="more" data-t="p2">전체 보기</button>
+  </div>
+
 
   <div class="box warn">
     <span class="t">★ AI 티는 얼굴 크기가 아니라 「미화」에서 납니다</span>
     <p class="small"><strong>visible pores</strong> ·
-    <strong>Do not make his skin perfectly smooth</strong> — 이 두 줄을 지우지 마세요.
-    피부가 매끈해지면 바로 들킵니다.<br>
-    <strong>NO TEXT</strong> — AI는 한글을 못 씁니다. 화면 · 서류에 글자가 보이면 들킵니다.</p>
-    <p class="small"><strong>나오면 확인</strong> — 손가락 개수 · 깨진 글자 ·
-    <strong>기준 사진과 같은 사람인지</strong> · 왼쪽에 자막 자리가 비었는지<br>
+    <strong>피부를 지나치게 매끈하게 만들지 마</strong> — 이 줄을 지우지 마세요.
+    피부가 매끈해지면 바로 들킵니다.</p>
+    <p class="small"><strong>나오면 확인</strong> — 손가락 개수 · 깨진 한글 ·
+    <strong>기준 사진과 같은 사람인지</strong> · <strong>로고 철자와 색</strong> ·
+    자막에 <strong>원고에 없는 숫자</strong>가 들어갔는지<br>
     ★ <strong>3~4번 돌립니다.</strong> 고쳐 쓰려 붙들지 말고 버리고 다시.</p>
+  </div>
+  <div class="box warn">
+    <span class="t">★★ 「우리 대표」라고 소개하지 않습니다</span>
+    <p class="small">AI로 만든 사람입니다. <strong>이름 · 직함</strong>을 붙이지 않으면
+    대부분 해결됩니다.<br>
+    2번 인터뷰형 자막은 <strong>원고에 있는 내용을 요약한 것</strong>이어야 합니다.
+    실제로 한 말을 받아 적은 것처럼 쓰지 마세요.</p>
   </div>
   <div class="box warn">
     <span class="t">★★ 「우리 대표」라고 소개하지 않습니다</span>
@@ -282,5 +770,49 @@ NO SIGNAGE.</div>
 </section>
 
 </div>
+<script>
+(function(){
+  document.querySelectorAll('.pbox .cp').forEach(function(b){
+    b.onclick = function(){
+      var t = document.getElementById(b.dataset.t).querySelector('.pr').textContent;
+      var done = function(){
+        b.textContent = '복사됨'; b.classList.add('ok');
+        setTimeout(function(){ b.textContent = '복사'; b.classList.remove('ok') }, 1600);
+      };
+      var legacy = function(){
+        var a = document.createElement('textarea');
+        a.value = t; a.style.position = 'fixed'; a.style.opacity = 0;
+        document.body.appendChild(a); a.focus(); a.select();
+        var ok = false;
+        try { ok = document.execCommand('copy') } catch (e) {}
+        document.body.removeChild(a);
+        if (ok) { done() }
+        else {
+          // 복사가 막힌 환경 — 직접 긁어갈 수 있게 전체를 펴고 선택해 줍니다
+          var box = document.getElementById(b.dataset.t);
+          box.classList.add('open');
+          box.querySelector('.more').textContent = '접기';
+          var pre = box.querySelector('.pr'), sel = window.getSelection(), rg = document.createRange();
+          rg.selectNodeContents(pre); sel.removeAllRanges(); sel.addRange(rg);
+          b.textContent = 'Ctrl+C 로 복사';
+          setTimeout(function(){ b.textContent = '복사' }, 3000);
+        }
+      };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(t).then(done).catch(legacy);
+      } else {
+        legacy();
+      }
+    };
+  });
+  document.querySelectorAll('.pbox .more').forEach(function(b){
+    b.onclick = function(){
+      var box = document.getElementById(b.dataset.t);
+      box.classList.toggle('open');
+      b.textContent = box.classList.contains('open') ? '접기' : '전체 보기';
+    };
+  });
+})();
+</script>
 </body>
 </html>
